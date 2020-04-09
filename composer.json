@@ -1,0 +1,15 @@
+{
+  "name": "jRazer/wooppay",
+  "description": "Прием платежей через Wooppay",
+  "keywords": ["wooppay"],
+  "type": "library",
+  "require": {
+    "php": ">=5.4.0",
+    "ext-soap": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "jRazer\\Wooppay\\": ""
+    }
+  }
+}
