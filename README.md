@@ -1,6 +1,6 @@
 ## Установка
 ```bash
-composer require jRazer/wooppay 1.0
+composer require jrazer/wooppay dev-master
 ```
 ## Использование
 ```php
