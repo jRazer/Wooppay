@@ -3,7 +3,7 @@
 namespace jRazer\Wooppay;
 
 use jRazer\Wooppay\Exception\WooppayException;
-use jRazer\Wooppay\WSDL\CashCreateInvoiceByServiceRequest;
+use jRazer\Wooppay\WSDL\CashCreateInvoiceExtended2Request;
 use jRazer\Wooppay\WSDL\CashGetOperationDataRequest;
 use jRazer\Wooppay\WSDL\CoreLoginRequest;
 use jRazer\Wooppay\WSDL\XmlControllerService;
@@ -36,7 +36,6 @@ class WooppayClient
     protected $login;
 
     /**
-     * @param string $serviceName  Наименование сервиса
      * @param string $orderId      ID заказа
      * @param float|int $price     Сумма выставляемого счета
      * @param integer $timeInHours Количество часов, через которое операция станет недействительной
@@ -49,8 +48,7 @@ class WooppayClient
      * @return WooppayInvoiceResult
      * @throws WooppayException
      */
-    public function createInvoiceByService(
-        $serviceName,
+    public function createInvoice(
         $orderId,
         $price,
         $timeInHours,
@@ -63,8 +61,7 @@ class WooppayClient
     {
         $deathDate =  date('Y-m-d H:i:s', time() + $timeInHours * 3600);
 
-        $request = new CashCreateInvoiceByServiceRequest(
-            $serviceName,
+        $request = new CashCreateInvoiceExtended2Request(
             0,
             $email,
             $phone,
@@ -74,7 +71,7 @@ class WooppayClient
             $orderInfo,
             $price,
             $deathDate,
-            0,
+            4,
             $comment,
             0
         );
