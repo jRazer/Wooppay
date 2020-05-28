@@ -46,7 +46,7 @@ class WooppayClient
      * @param string $orderInfo    Комментарий в форме оплаты
      * @param string $comment      Короткий необязательный комментарий, который попадет в историю операций клиента
      * @return WooppayInvoiceResult
-     * @throws WooppayException
+     * @throws WooppayException 
      */
     public function createInvoice(
         $orderId,
