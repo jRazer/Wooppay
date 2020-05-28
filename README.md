@@ -10,7 +10,7 @@ $wooppay = new \jRazer\Wooppay\WooppayClient(
     'password'
 );
 
-$invoice = $wooppay->createInvoiceByService(...);
+$invoice = $wooppay->createInvoice(...);
 
 $operationUrl = $invoice->operationUrl;
 $operationId = $invoice->operationId;
