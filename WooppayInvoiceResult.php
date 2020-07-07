@@ -6,6 +6,7 @@ use jRazer\Wooppay\Exception\WooppayException;
 use jRazer\Wooppay\WSDL\XmlControllerService;
 use jRazer\Wooppay\WSDL\CashCreateInvoiceExtended2Request;
 use jRazer\Wooppay\WSDL\CashCreateInvoiceByServiceRequest;
+use jRazer\Wooppay\WSDL\CashCreateInvoiceRequest;
 
 /**
  * Class WooppayInvoiceResult
@@ -39,8 +40,10 @@ class WooppayInvoiceResult
 
 	if ($service == false)
     	    $invoice = $this->client->cash_createInvoice2Extended($this->request);
-	else 
+	else if ($service == 1)
 	    $invoice = $this->client->cash_createInvoiceByService($this->request);
+	else if ($service == 2)
+	    $invoice = $this->client->cash_createInvoice($this->request);
 
         $response = $invoice->getResponse();
         if ($response == null) {

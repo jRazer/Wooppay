@@ -5,6 +5,7 @@ namespace jRazer\Wooppay;
 use jRazer\Wooppay\Exception\WooppayException;
 use jRazer\Wooppay\WSDL\CashCreateInvoiceExtended2Request;
 use jRazer\Wooppay\WSDL\CashCreateInvoiceByServiceRequest;
+use jRazer\Wooppay\WSDL\CashCreateInvoiceRequest;
 use jRazer\Wooppay\WSDL\CashGetOperationDataRequest;
 use jRazer\Wooppay\WSDL\CoreLoginRequest;
 use jRazer\Wooppay\WSDL\XmlControllerService;
@@ -124,7 +125,44 @@ class WooppayClient
             0
         );
 
-        return new WooppayInvoiceResult($this->getClient(), $request, true);
+        return new WooppayInvoiceResult($this->getClient(), $request, 1);
+    }
+
+    /**
+     * @param string $orderId      ID заказа
+     * @param float|int $price     Сумма выставляемого счета
+     * @param integer $timeInHours Количество часов, через которое операция станет недействительной
+     * @param string $backUrl      Адрес, на который будет переадресован пользователь после оплаты
+     * @param string $completeUrl  Адрес, на который Wooppay сделает запрос после успешной оплаты
+     * @param string $orderInfo    Комментарий в форме оплаты
+     * @param string $comment      Короткий необязательный комментарий, который попадет в историю операций клиента
+     * @return WooppayInvoiceResult
+     * @throws WooppayException
+     */
+    public function createInvoiceByRequest(
+        $orderId,
+        $price,
+        $timeInHours,
+        $backUrl,
+        $completeUrl,
+        $orderInfo,
+        $comment = '')
+    {
+        $deathDate =  date('Y-m-d H:i:s', time() + $timeInHours * 3600);
+
+        $request = new CashCreateInvoiceRequest(
+            (string)$orderId,
+            $backUrl,
+            $completeUrl,
+            $orderInfo,
+            $price,
+            $deathDate,
+            0,
+            $comment,
+            0
+        );
+
+        return new WooppayInvoiceResult($this->getClient(), $request, 2);
     }
 
     /**
