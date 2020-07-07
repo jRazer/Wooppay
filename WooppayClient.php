@@ -4,6 +4,7 @@ namespace jRazer\Wooppay;
 
 use jRazer\Wooppay\Exception\WooppayException;
 use jRazer\Wooppay\WSDL\CashCreateInvoiceExtended2Request;
+use jRazer\Wooppay\WSDL\CashCreateInvoiceByServiceRequest;
 use jRazer\Wooppay\WSDL\CashGetOperationDataRequest;
 use jRazer\Wooppay\WSDL\CoreLoginRequest;
 use jRazer\Wooppay\WSDL\XmlControllerService;
@@ -77,6 +78,53 @@ class WooppayClient
         );
 
         return new WooppayInvoiceResult($this->getClient(), $request);
+    }
+
+    /**
+     * @param string $serviceName  Наименование сервиса
+     * @param string $orderId      ID заказа
+     * @param float|int $price     Сумма выставляемого счета
+     * @param integer $timeInHours Количество часов, через которое операция станет недействительной
+     * @param string $email        Адрес электронной почты клиента
+     * @param string $phone        Телефон клиента
+     * @param string $backUrl      Адрес, на который будет переадресован пользователь после оплаты
+     * @param string $completeUrl  Адрес, на который Wooppay сделает запрос после успешной оплаты
+     * @param string $orderInfo    Комментарий в форме оплаты
+     * @param string $comment      Короткий необязательный комментарий, который попадет в историю операций клиента
+     * @return WooppayInvoiceResult
+     * @throws WooppayException
+     */
+    public function createInvoiceByService(
+        $serviceName,
+        $orderId,
+        $price,
+        $timeInHours,
+        $email,
+        $phone,
+        $backUrl,
+        $completeUrl,
+        $orderInfo,
+        $comment = '')
+    {
+        $deathDate =  date('Y-m-d H:i:s', time() + $timeInHours * 3600);
+
+        $request = new CashCreateInvoiceByServiceRequest(
+            $serviceName,
+            0,
+            $email,
+            $phone,
+            (string)$orderId,
+            $backUrl,
+            $completeUrl,
+            $orderInfo,
+            $price,
+            $deathDate,
+            0,
+            $comment,
+            0
+        );
+
+        return new WooppayInvoiceResult($this->getClient(), $request, true);
     }
 
     /**

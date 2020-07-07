@@ -5,6 +5,7 @@ namespace jRazer\Wooppay;
 use jRazer\Wooppay\Exception\WooppayException;
 use jRazer\Wooppay\WSDL\XmlControllerService;
 use jRazer\Wooppay\WSDL\CashCreateInvoiceExtended2Request;
+use jRazer\Wooppay\WSDL\CashCreateInvoiceByServiceRequest;
 
 /**
  * Class WooppayInvoiceResult
@@ -33,9 +34,13 @@ class WooppayInvoiceResult
     /**
      * @throws WooppayException
      */
-    protected function create()
+    protected function create($service = false)
     {
-        $invoice = $this->client->cash_createInvoice2Extended($this->request);
+
+	if ($service == false)
+    	    $invoice = $this->client->cash_createInvoice2Extended($this->request);
+	else 
+	    $invoice = $this->client->cash_createInvoiceByService($this->request);
 
         $response = $invoice->getResponse();
         if ($response == null) {
@@ -52,10 +57,10 @@ class WooppayInvoiceResult
      * @param CashCreateInvoiceByServiceRequest $request
      * @throws WooppayException
      */
-    public function __construct($client, $request)
+    public function __construct($client, $request, $service = false)
     {
         $this->client = $client;
         $this->request = $request;
-        $this->create();
+        $this->create($service);
     }
 }
