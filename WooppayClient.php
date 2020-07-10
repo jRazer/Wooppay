@@ -138,6 +138,7 @@ class WooppayClient
      * @param string $completeUrl  Адрес, на который Wooppay сделает запрос после успешной оплаты
      * @param string $orderInfo    Комментарий в форме оплаты
      * @param string $comment      Короткий необязательный комментарий, который попадет в историю операций клиента
+     * @param string $serviceType  Тип сервиса, по умолчанию - 0
      * @return WooppayInvoiceResult
      * @throws WooppayException
      */
@@ -148,7 +149,8 @@ class WooppayClient
         $backUrl,
         $completeUrl,
         $orderInfo,
-        $comment = '')
+        $comment = '',
+	$serviceType = 0)
     {
         $deathDate =  date('Y-m-d H:i:s', time() + $timeInHours * 3600);
 
@@ -159,7 +161,7 @@ class WooppayClient
             $orderInfo,
             $price,
             $deathDate,
-            0,
+            $serviceType,
             $comment,
             0
         );
